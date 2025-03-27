@@ -1,4 +1,4 @@
-package org.ar.eduutn.frba.dds.mqttpixelgame.models;
+package org.ar.eduutn.frba.dds.mqttpixelgame.entities.models;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

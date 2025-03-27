@@ -1,7 +1,7 @@
-package org.ar.eduutn.frba.dds.mqttpixelgame.models.factories;
+package org.ar.eduutn.frba.dds.mqttpixelgame.entities.models.factories;
 
-import org.ar.eduutn.frba.dds.mqttpixelgame.models.Color;
-import org.ar.eduutn.frba.dds.mqttpixelgame.models.PixelCanvas;
+import org.ar.eduutn.frba.dds.mqttpixelgame.entities.models.Color;
+import org.ar.eduutn.frba.dds.mqttpixelgame.entities.models.PixelCanvas;
 import java.util.Random;
 
 public class PixelCanvasFactory {

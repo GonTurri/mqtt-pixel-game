@@ -44,11 +44,13 @@ public class PixelCanvas {
     this.targetCanvas = canvas;
   }
 
-  public synchronized void rellenarPixel(int x, int y, Color color) throws CoordenadasFueraDeRangoException {
+  public synchronized ResultadoCambio rellenarPixel(int x, int y, Color color) throws CoordenadasFueraDeRangoException {
     if (!coordenadasDentroDeRango(x, y)) {
       throw new CoordenadasFueraDeRangoException();
     }
+    if (matriz[x][y] != null &&  matriz[x][y].equals(color)) return new ResultadoCambio(false);
     matriz[x][y] = color;
+    return new ResultadoCambio(true);
   }
 
   public synchronized boolean logroSuTarget() {

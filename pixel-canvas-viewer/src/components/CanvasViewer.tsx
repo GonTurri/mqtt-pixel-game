@@ -9,66 +9,65 @@ interface PixelCanvas {
   target: string[][];
 }
 
+interface PixelCanvasCambioDto {
+  id: string;
+  fila: number;
+  columna: number;
+  color: string;
+}
+
 const CanvasViewer: React.FC = () => {
   const [canvasList, setCanvasList] = useState<PixelCanvas[]>([]);
   const [winners, setWinners] = useState<{ [key: string]: boolean }>({});
 
   useEffect(() => {
+    const alreadySubscribed = new Set<string>();
     const client = new Client({
       brokerURL: "ws://localhost:8080/ws",
       onConnect: () => {
-        console.log("Connected to WebSocket");
-
+        console.log("✅ Conectado al WebSocket");
+  
         client.subscribe("/topic/canvas/todos", (message) => {
           const parsedData: PixelCanvas[] = JSON.parse(message.body);
           setCanvasList(parsedData);
+  
+          parsedData.forEach((canvas) => {
+            if (alreadySubscribed.has(canvas.id)) return;
+            alreadySubscribed.add(canvas.id);
+  
+            client.subscribe(`/topic/canvas/${canvas.id}`, (message) => {
+              const cambio: PixelCanvasCambioDto = JSON.parse(message.body);
+              setCanvasList((prev) =>
+                prev.map((c) => {
+                  if (c.id !== cambio.id) return c;
+                  const nuevaMatriz = c.matriz.map((row) => [...row]);
+                  nuevaMatriz[cambio.fila][cambio.columna] = cambio.color;
+                  return { ...c, matriz: nuevaMatriz };
+                })
+              );
+            });
+  
+            client.subscribe(`/topic/canvas/${canvas.id}/ganador`, () => {
+              setWinners((prev) => ({ ...prev, [canvas.id]: true }));
+            });
+          });
         });
-
+  
         setTimeout(() => {
           client.publish({ destination: "/app/obtenerCanvas" });
         }, 100);
       },
       onStompError: (frame) => {
-        console.error("STOMP Error", frame);
+        console.error("❌ STOMP error:", frame);
       },
     });
-
+  
     client.activate();
-
+  
     return () => {
       client.deactivate();
     };
   }, []);
-
-  useEffect(() => {
-    if (!canvasList.length) return;
-
-    const client = new Client({
-      brokerURL: "ws://localhost:8080/ws",
-      onConnect: () => {
-        console.log("Connected to WebSocket for canvas updates");
-
-        canvasList.forEach((canvas) => {
-          client.subscribe(`/topic/canvas/${canvas.id}`, (message) => {
-            const updatedCanvas: PixelCanvas = JSON.parse(message.body);
-            setCanvasList((prev) =>
-              prev.map((c) => (c.id === updatedCanvas.id ? updatedCanvas : c))
-            );
-          });
-
-          client.subscribe(`/topic/canvas/${canvas.id}/ganador`, () => {
-            setWinners((prev) => ({ ...prev, [canvas.id]: true }));
-          });
-        });
-      },
-    });
-
-    client.activate();
-
-    return () => {
-      client.deactivate();
-    };
-  }, [canvasList]); // 🔹 Se añade `canvasList` como dependencia, pero evitando un bucle infinito.
 
   return (
     <div className="grid grid-cols-2 gap-8 p-8 min-h-screen">
@@ -76,19 +75,25 @@ const CanvasViewer: React.FC = () => {
         <p className="text-center text-gray-500">No hay canvas disponibles.</p>
       ) : (
         canvasList.map((canvas) => (
-          <div key={canvas.id} className="relative p-4 border rounded-lg shadow-lg bg-white">
-            <h2 className="text-lg font-bold mb-3 text-center">Canvas Id: {canvas.id}</h2>
+          <div
+            key={canvas.id}
+            className="relative p-4 border rounded-lg shadow-lg bg-white"
+          >
+            <h2 className="text-lg font-bold mb-3 text-center">
+              Canvas Id: {canvas.id}
+            </h2>
             <div className="flex flex-col gap-4">
               <div>
-                <h3 className="text-md font-semibold text-center mb-3">Matriz a Rellenar</h3>
+                <h3 className="text-md font-semibold text-center mb-3">
+                  Matriz a Rellenar
+                </h3>
                 <div
                   className="grid place-content-center"
                   style={{
-                    display: "grid",
                     gridTemplateColumns: `repeat(${canvas.columnas}, 32px)`,
                     gridTemplateRows: `repeat(${canvas.filas}, 32px)`,
-                    gap: "2px"
-                    // backgroundColor: "#ddd",
+                    gap: "2px",
+                    display: "grid",
                   }}
                 >
                   {canvas.matriz.flat().map((color, index) => (
@@ -101,15 +106,16 @@ const CanvasViewer: React.FC = () => {
                 </div>
               </div>
               <div>
-                <h3 className="text-md text-center font-semibold mt-10 mb-3">Matriz Objetivo</h3>
+                <h3 className="text-md text-center font-semibold mt-10 mb-3">
+                  Matriz Objetivo
+                </h3>
                 <div
                   className="grid place-content-center"
                   style={{
-                    display: "grid",
                     gridTemplateColumns: `repeat(${canvas.columnas}, 32px)`,
                     gridTemplateRows: `repeat(${canvas.filas}, 32px)`,
-                    gap: "2px"
-                    // backgroundColor: "#ddd",
+                    gap: "2px",
+                    display: "grid",
                   }}
                 >
                   {canvas.target.flat().map((color, index) => (
@@ -119,13 +125,12 @@ const CanvasViewer: React.FC = () => {
                       style={{ backgroundColor: color }}
                     ></div>
                   ))}
-              
                 </div>
                 {winners[canvas.id] && (
-              <div className="flex text-center bg-green-900 items-center justify-center text-white text-2xl font-bold mt-10">
-                ¡Ganador!
-              </div>
-            )}
+                  <div className="flex text-center bg-green-900 items-center justify-center text-white text-2xl font-bold mt-10">
+                    ¡Ganador!
+                  </div>
+                )}
               </div>
             </div>
           </div>

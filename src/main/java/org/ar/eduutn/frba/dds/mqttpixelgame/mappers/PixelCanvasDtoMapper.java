@@ -4,7 +4,7 @@ import org.ar.eduutn.frba.dds.mqttpixelgame.dtos.PixelCanvasResponseDto;
 import org.ar.eduutn.frba.dds.mqttpixelgame.entities.models.Color;
 import org.ar.eduutn.frba.dds.mqttpixelgame.entities.models.PixelCanvas;
 import org.ar.eduutn.frba.dds.mqttpixelgame.entities.models.factories.PixelCanvasFactory;
-import org.ar.eduutn.frba.dds.mqttpixelgame.entities.models.factories.RellenoCanvas;
+import org.ar.eduutn.frba.dds.mqttpixelgame.entities.models.factories.rellenos.RellenoCanvas;
 
 public class PixelCanvasDtoMapper {
   public static PixelCanvasResponseDto fromPixelCanvas(PixelCanvas canvas) {

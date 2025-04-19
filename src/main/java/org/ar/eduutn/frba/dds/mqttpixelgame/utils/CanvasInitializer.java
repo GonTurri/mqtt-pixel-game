@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.ar.eduutn.frba.dds.mqttpixelgame.entities.models.Color;
 import org.ar.eduutn.frba.dds.mqttpixelgame.entities.models.PixelCanvas;
 import org.ar.eduutn.frba.dds.mqttpixelgame.entities.models.factories.PixelCanvasFactory;
-import org.ar.eduutn.frba.dds.mqttpixelgame.entities.models.factories.RellenoCanvas;
+import org.ar.eduutn.frba.dds.mqttpixelgame.entities.models.factories.rellenos.RellenoCanvas;
 import org.ar.eduutn.frba.dds.mqttpixelgame.entities.repositories.CanvasRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
@@ -23,19 +23,19 @@ public class CanvasInitializer implements CommandLineRunner {
               Color.BLANCO, Color.BLANCO, Color.BLANCO, Color.BLANCO, Color.BLANCO, Color.BLANCO
           },
           {
-              Color.NEGRO, Color.BLANCO, Color.MARRON, Color.MARRON, Color.BLANCO, Color.NEGRO
+              Color.BEIGE, Color.BEIGE, Color.BEIGE, Color.BEIGE, Color.BEIGE, Color.BEIGE
           },
           {
-              Color.BLANCO, Color.BLANCO, Color.BLANCO, Color.BLANCO, Color.BLANCO, Color.BLANCO
+              Color.NEGRO, Color.BLANCO, Color.BEIGE, Color.BEIGE, Color.BLANCO, Color.NEGRO
           },
           {
-              Color.MARRON, Color.MARRON, Color.MARRON, Color.MARRON, Color.MARRON, Color.MARRON
+              Color.BEIGE, Color.BEIGE, Color.BEIGE, Color.BEIGE, Color.BEIGE, Color.BEIGE
           },
           {
-              Color.BLANCO, Color.MARRON, Color.ROSA, Color.ROSA, Color.MARRON, Color.BLANCO
+              Color.BLANCO, Color.BEIGE, Color.ROSA, Color.ROSA, Color.BEIGE, Color.BLANCO
           },
           {
-              Color.BLANCO, Color.MARRON, Color.ROSA, Color.ROSA, Color.MARRON, Color.BLANCO
+              Color.BLANCO, Color.BEIGE, Color.ROSA, Color.ROSA, Color.BEIGE, Color.BLANCO
           }
       };
 
@@ -49,7 +49,7 @@ public class CanvasInitializer implements CommandLineRunner {
               Color.BLANCO, Color.NEGRO, Color.BLANCO, Color.BLANCO, Color.NEGRO, Color.BLANCO
           },
           {
-              Color.BLANCO, Color.MARRON, Color.MARRON, Color.MARRON, Color.MARRON, Color.BLANCO
+              Color.BLANCO, Color.AMARILLO, Color.AMARILLO, Color.AMARILLO, Color.AMARILLO, Color.BLANCO
           },
           {
               Color.BLANCO, Color.MARRON, Color.MARRON, Color.MARRON, Color.MARRON, Color.BLANCO

@@ -11,6 +11,7 @@ import org.ar.eduutn.frba.dds.mqttpixelgame.dtos.PixelCanvasResponseDto;
 import org.ar.eduutn.frba.dds.mqttpixelgame.entities.models.PixelCanvas;
 import org.ar.eduutn.frba.dds.mqttpixelgame.entities.repositories.CanvasRepository;
 import org.ar.eduutn.frba.dds.mqttpixelgame.exceptions.CoordenadasFueraDeRangoException;
+import org.ar.eduutn.frba.dds.mqttpixelgame.mappers.CambioDtoMapper;
 import org.ar.eduutn.frba.dds.mqttpixelgame.mappers.ColorMapper;
 import org.ar.eduutn.frba.dds.mqttpixelgame.mappers.PixelCanvasDtoMapper;
 import org.springframework.context.ApplicationEventPublisher;
@@ -47,10 +48,12 @@ public class CanvasService {
     this.canvasRepository.obtenerPorId(canvasId)
         .ifPresent(canvas -> {
           synchronized (canvas) {
-            canvas.rellenarPixel(request.x(), request.y(), ColorMapper.colorFromString(request.color()));
-            this.canvasRepository.actualizar(canvas.getId(), canvas);
-            publisher.publishEvent(new CanvasActualizadoEvent(this, PixelCanvasDtoMapper.fromPixelCanvas(canvas)));
-            verificarSiSeLogroImagen(canvas);
+            var resultado = canvas.rellenarPixel(request.x(), request.y(), ColorMapper.colorFromString(request.color()));
+            if (resultado.huboCambio()) {
+              this.canvasRepository.actualizar(canvas.getId(), canvas);
+              publisher.publishEvent(new CanvasActualizadoEvent(this, CambioDtoMapper.fromCambioColorRequest(canvasId, request)));
+              verificarSiSeLogroImagen(canvas);
+            }
           }
         });
   }

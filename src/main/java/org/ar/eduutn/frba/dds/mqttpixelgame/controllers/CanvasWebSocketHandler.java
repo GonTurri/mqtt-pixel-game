@@ -31,7 +31,7 @@ public class CanvasWebSocketHandler {
 
   @EventListener
   public void handleCanvasActualizado(CanvasActualizadoEvent event) {
-    messagingTemplate.convertAndSend("/topic/canvas/" + event.getCanvas().id(), event.getCanvas());
+    messagingTemplate.convertAndSend("/topic/canvas/" + event.getCambioDto().id(), event.getCambioDto());
   }
 
   @EventListener

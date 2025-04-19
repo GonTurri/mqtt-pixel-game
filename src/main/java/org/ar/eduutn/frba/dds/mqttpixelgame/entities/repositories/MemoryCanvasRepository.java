@@ -3,6 +3,7 @@ package org.ar.eduutn.frba.dds.mqttpixelgame.entities.repositories;
 import org.ar.eduutn.frba.dds.mqttpixelgame.entities.models.PixelCanvas;
 import org.springframework.stereotype.Repository;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;

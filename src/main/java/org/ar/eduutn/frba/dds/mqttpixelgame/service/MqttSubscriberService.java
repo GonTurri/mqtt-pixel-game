@@ -35,7 +35,7 @@ public class MqttSubscriberService {
   private final Validator validator = factory.getValidator();
   private final Gson gson = new Gson();
 
-  private final ExecutorService pool = Executors.newFixedThreadPool(50);
+  private final ExecutorService pool = Executors.newFixedThreadPool(15);
 
   @Value("${broker.topic}")
   private String topicTemplate;

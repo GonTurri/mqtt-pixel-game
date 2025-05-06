@@ -79,13 +79,13 @@ const CanvasViewer: React.FC = () => {
             key={canvas.id}
             className="relative p-4 border rounded-lg shadow-lg bg-white"
           >
-            <h2 className="text-lg font-bold mb-3 text-center">
-              Canvas Id: {canvas.id}
-            </h2>
+            <h2 className="text-lg font-semibold text-center text-gray-700 mb-4">
+          Canvas #{canvas.id}
+          </h2>
             <div className="flex flex-col gap-4">
               <div>
                 <h3 className="text-md font-semibold text-center mb-3">
-                  Matriz a Rellenar
+                  Matriz para colorear
                 </h3>
                 <div
                   className="grid place-content-center"

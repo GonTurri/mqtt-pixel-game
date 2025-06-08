@@ -38,20 +38,20 @@ public class CanvasService {
   public void handleCambioColorEvent(CambioColorPixelEvent event) {
     try {
 
-      llenarPixel(event.getCanvasId(), event.getCambioColorRequest());
+      llenarPixel(event.getCambioColorRequest());
     } catch (CoordenadasFueraDeRangoException e) {
       e.printStackTrace();
     }
   }
 
-  public void llenarPixel(String canvasId, CambioColorRequest request) throws CoordenadasFueraDeRangoException {
-    this.canvasRepository.obtenerPorId(canvasId)
+  public void llenarPixel(CambioColorRequest request) throws CoordenadasFueraDeRangoException {
+    this.canvasRepository.obtenerPorId(request.id())
         .ifPresent(canvas -> {
           synchronized (canvas) {
             var resultado = canvas.rellenarPixel(request.x(), request.y(), ColorMapper.colorFromString(request.color()));
             if (resultado.huboCambio()) {
               this.canvasRepository.actualizar(canvas.getId(), canvas);
-              publisher.publishEvent(new CanvasActualizadoEvent(this, CambioDtoMapper.fromCambioColorRequest(canvasId, request)));
+              publisher.publishEvent(new CanvasActualizadoEvent(this, CambioDtoMapper.fromCambioColorRequest(request)));
               verificarSiSeLogroImagen(canvas);
             }
           }

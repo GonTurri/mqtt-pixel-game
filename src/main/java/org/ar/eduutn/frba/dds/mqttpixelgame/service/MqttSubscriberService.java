@@ -40,10 +40,6 @@ public class MqttSubscriberService {
   @Value("${broker.topic}")
   private String topicTemplate;
 
-
-  @Value("${broker.topic.split.character}")
-  private String topicSplitCharacter;
-
   @PostConstruct
   private void subscribeToCanvasUpdates() {
     try {
@@ -74,13 +70,8 @@ public class MqttSubscriberService {
       CambioColorRequest cambioColorRequest = gson.fromJson(payload, CambioColorRequest.class);
 
       validarRequest(cambioColorRequest);
-
-      // Extraer el ID del canvas desde el topic (ej: canvas/1/update -> id = 1)
-      String[] partes = topic.split(topicSplitCharacter);
-      String canvasId = partes[3];
-
       // Publicar evento para manejar el cambio en un servicio desacoplado
-      publisher.publishEvent(new CambioColorPixelEvent(this, canvasId, cambioColorRequest));
+      publisher.publishEvent(new CambioColorPixelEvent(this, cambioColorRequest));
     } catch (RuntimeException e) {
       e.printStackTrace();
     }

@@ -13,24 +13,25 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
   @Override
   public void configureMessageBroker(MessageBrokerRegistry config) {
-    config.enableSimpleBroker("/topic");
-    config.setApplicationDestinationPrefixes("/app");
+    config
+        .setApplicationDestinationPrefixes("/app")
+        .enableStompBrokerRelay("/topic")
+        .setRelayHost("localhost")
+        .setRelayPort(61613)
+        .setClientLogin("guest")
+        .setClientPasscode("guest");
+
   }
 
   @Override
   public void registerStompEndpoints(StompEndpointRegistry registry) {
     registry.addEndpoint("/ws").setAllowedOrigins("*");
   }
-
   @Override
-  public void configureWebSocketTransport(WebSocketTransportRegistration registration) {
-    registration.addDecoratorFactory(WebSocketSessionCapturingHandlerDecorator::new);
+  public void configureWebSocketTransport(WebSocketTransportRegistration registry) {
+    registry.setSendBufferSizeLimit(2 * 1024 * 1024); // 2MB
+    registry.setSendTimeLimit(30000); // 30 segundos
   }
-//  @Override
-//  public void configureWebSocketTransport(WebSocketTransportRegistration registry) {
-//    registry.setMessageSizeLimit(2 * 1024 * 1024); // 2MB
-//    registry.setSendBufferSizeLimit(2 * 1024 * 1024); // 2MB
-//    registry.setSendTimeLimit(30000); // 30 segundos
-//  }
 
-  }
+
+}

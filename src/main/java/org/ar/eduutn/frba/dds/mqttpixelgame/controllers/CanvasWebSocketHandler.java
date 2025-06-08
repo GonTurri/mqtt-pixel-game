@@ -26,17 +26,17 @@ public class CanvasWebSocketHandler {
 
   @EventListener
   public void handleEnviarTodosLosCanvas(EnviarTodosLosCanvasEvent event) {
-    messagingTemplate.convertAndSend("/topic/canvas/todos", event.getCanvasList());
+    messagingTemplate.convertAndSend("/topic/canvas.todos", event.getCanvasList());
   }
 
   @EventListener
   public void handleCanvasActualizado(CanvasActualizadoEvent event) {
-    messagingTemplate.convertAndSend("/topic/canvas/" + event.getCambioDto().id(), event.getCambioDto());
+    messagingTemplate.convertAndSend("/topic/canvas." + event.getCambioDto().id(), event.getCambioDto());
   }
 
   @EventListener
   public void handleCanvasCompletado(CanvasCompletadoEvent event) {
-    messagingTemplate.convertAndSend("/topic/canvas/" + event.getCanvasId() + "/ganador", "¡Canvas completado!");
+    messagingTemplate.convertAndSend("/topic/canvas." + event.getCanvasId() + ".ganador", "¡Canvas completado!");
   }
 
 

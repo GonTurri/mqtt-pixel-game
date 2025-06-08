@@ -27,7 +27,7 @@ const CanvasViewer: React.FC = () => {
       onConnect: () => {
         console.log("✅ Conectado al WebSocket");
   
-        client.subscribe("/topic/canvas/todos", (message) => {
+        client.subscribe("/topic/canvas.todos", (message) => {
           const parsedData: PixelCanvas[] = JSON.parse(message.body);
           setCanvasList(parsedData);
   
@@ -35,7 +35,7 @@ const CanvasViewer: React.FC = () => {
             if (alreadySubscribed.has(canvas.id)) return;
             alreadySubscribed.add(canvas.id);
   
-            client.subscribe(`/topic/canvas/${canvas.id}`, (message) => {
+            client.subscribe(`/topic/canvas.${canvas.id}`, (message) => {
               const cambio: PixelCanvasCambioDto = JSON.parse(message.body);
               setCanvasList((prev) =>
                 prev.map((c) => {
@@ -47,7 +47,7 @@ const CanvasViewer: React.FC = () => {
               );
             });
   
-            client.subscribe(`/topic/canvas/${canvas.id}/ganador`, () => {
+            client.subscribe(`/topic/canvas.${canvas.id}.ganador`, () => {
               setWinners((prev) => ({ ...prev, [canvas.id]: true }));
             });
           });

@@ -27,9 +27,10 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
   public void registerStompEndpoints(StompEndpointRegistry registry) {
     registry.addEndpoint("/ws").setAllowedOrigins("*");
   }
+
   @Override
   public void configureWebSocketTransport(WebSocketTransportRegistration registry) {
-    registry.setSendBufferSizeLimit(2 * 1024 * 1024); // 2MB
+    registry.setSendBufferSizeLimit(1024 * 1024); // 1MB
     registry.setSendTimeLimit(30000); // 30 segundos
   }
 

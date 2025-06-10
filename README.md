@@ -45,6 +45,8 @@ Parado en el directorio raiz:
 
 ```cd pixel-canvas-viewer/```
 
+```npm i```
+
 ```npm start```
 
 Y con eso ya debería estar andando e interceptando los mensajes que le mandes al broker: **broker.eqmx.io** al puerto 1883

@@ -72,8 +72,7 @@ public class MqttSubscriberService {
       validarRequest(cambioColorRequest);
       // Publicar evento para manejar el cambio en un servicio desacoplado
       publisher.publishEvent(new CambioColorPixelEvent(this, cambioColorRequest));
-    } catch (RuntimeException e) {
-      e.printStackTrace();
+    } catch (RuntimeException ignored) {
     }
   }
 

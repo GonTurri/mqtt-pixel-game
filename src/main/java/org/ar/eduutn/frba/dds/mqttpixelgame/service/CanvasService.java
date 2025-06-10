@@ -39,8 +39,7 @@ public class CanvasService {
     try {
 
       llenarPixel(event.getCambioColorRequest());
-    } catch (CoordenadasFueraDeRangoException e) {
-      e.printStackTrace();
+    } catch (CoordenadasFueraDeRangoException ignored) {
     }
   }
 
